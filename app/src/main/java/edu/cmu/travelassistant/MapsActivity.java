@@ -15,6 +15,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -68,8 +70,41 @@ import edu.cmu.travelassistant.data.Stop;
 import edu.cmu.travelassistant.util.AsyncResponse;
 import edu.cmu.travelassistant.util.FilteredStopResult;
 import edu.cmu.travelassistant.util.TravelAPITask;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+import android.widget.Button;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, AsyncResponse {
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener,
+        AsyncResponse {
 
     private GoogleMap mMap;
     private boolean mPermissionDenied = false;
@@ -89,10 +124,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     TravelAPITask travelAPITask;
 
+
+
+    //@zack
+    private int RADIUS = 500000;
+    GoogleApiClient googleApiClient;
+    LocationRequest locationRequest;
+    //@end
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //@zack
+        boolean available = isGooglePlayServicesAvailable();
+        if (available == false) {
+            finish();
+        }
+        //@end
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -179,6 +232,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng pittsburgh = new LatLng(40.4435, -79.9435);
         mMap.setMinZoomPreference(6.0f);
         mMap.setMaxZoomPreference(21.0f);
+
+        //@zack
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                initializeGoogleApiClient();
+                mMap.setMyLocationEnabled(true);
+            }
+        }
+        else {
+            initializeGoogleApiClient();
+            mMap.setMyLocationEnabled(true);
+        }
+
+        Button placeButton = (Button) findViewById(R.id.btnPlace);
+        placeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.clear();
+                String url = getUrl(user.latitude, user.longitude, "gym");
+                Object[] searchData = new Object[2];
+                searchData[0] = mMap;
+                searchData[1] = url;
+                PlaceRequest request = new PlaceRequest();
+                request.execute(searchData);
+                Toast.makeText(MapsActivity.this, "Nearby gym", Toast.LENGTH_LONG);
+            }
+        });
+        //@end
+
+
 
 //
 //                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).
@@ -427,4 +512,67 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
+
+
+    private boolean isGooglePlayServicesAvailable() {
+        GoogleApiAvailability googleApi = GoogleApiAvailability.getInstance();
+        int available = googleApi.isGooglePlayServicesAvailable(this);
+        if (available != ConnectionResult.SUCCESS) {
+            if (googleApi.isUserResolvableError(available)) {
+                googleApi.getErrorDialog(this, available, 0).show();
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+    protected synchronized void initializeGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
+    }
+
+    private String getUrl(double latitude, double longitude, String interestingPlace) {
+        StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        url.append("location=" + latitude + "," + longitude);
+        url.append("&radius=" + RADIUS);
+        url.append("&type=" + interestingPlace);
+        url.append("&sensor=true");
+
+        url.append("&key=" + "AIzaSyDYZNFBr5XGQeHNoB004O1m4lVpAU9Au8Q");
+
+        return url.toString();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
 }
