@@ -1,16 +1,11 @@
 package edu.cmu.travelassistant;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,17 +21,25 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import edu.cmu.travelassistant.data.Stop;
+import edu.cmu.travelassistant.util.AsyncResponse;
+import edu.cmu.travelassistant.util.FilteredStopResult;
+import edu.cmu.travelassistant.util.TravelAPITask;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, AsyncResponse {
 
     private GoogleMap mMap;
     private boolean mPermissionDenied = false;
-    /**
-     * Request code for location permission request.
-     *
-     * @see #onRequestPermissionsResult(int, String[], int[])
-     */
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private Context context = this;
+    private static List<Stop> stopList = new ArrayList<>();
+
+    TravelAPITask travelAPITask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        travelAPITask = new TravelAPITask(this);
+        travelAPITask.asyncResponse = this;
+        travelAPITask.execute();
+        stopList = getAllStops();
     }
 
     public String readJSONFile() {
@@ -62,12 +69,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return json;
     }
 
+    public List<Stop> getAllStops() {
+        String jsonData = readJSONFile();
+        List<Stop> stops = new ArrayList<>();
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera.
-     */
+        try {
+            JSONObject obj = new JSONObject(jsonData);
+            JSONArray stopsArray = obj.getJSONArray("stops");
+
+            for(int i = 0; i < stopsArray.length(); i++) {
+                JSONObject jsonObject = stopsArray.getJSONObject(i);
+
+                String stop_id = jsonObject.getString("stop_id");
+                String stopName = jsonObject.getString("stop_name");
+                String latitude = jsonObject.getString("stop_lat");
+                String longitude = jsonObject.getString("stop_lng");
+
+                stops.add(new Stop(stop_id, latitude, longitude, stopName));
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return stops;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -76,49 +102,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(6.0f);
         mMap.setMaxZoomPreference(21.0f);
 
-        String jsonData = readJSONFile();
-        try {
-            JSONObject obj = new JSONObject(jsonData);
-            JSONArray stopsArray = obj.getJSONArray("stops");
-
-            for(int i = 0; i < 50; i++) {
-                JSONObject jsonObject = stopsArray.getJSONObject(i);
-
-                String stopName = jsonObject.getString("stop_name");
-                Log.i("Stop name : ", stopName);
-
-                float latitude = Float.parseFloat(jsonObject.getString("stop_lat"));
-                float longitude = Float.parseFloat(jsonObject.getString("stop_lng"));
-
-                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).
-                        title(stopName).icon
-                        (BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
-            }
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
+//
+//                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).
+//                        title(stopName).icon
+//                        (BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pittsburgh, 14.0f));
 
-        this.displayMyLocation(mMap);
+//        this.displayMyLocation(mMap);
+    }
+
+    @Override
+    public void processNearestStops(List<FilteredStopResult> results) {
+            if(results != null) {
+                // Plot all nearby stops within a radius of 500m
+
+//                for(FilteredStopResult filteredStopResult : results) {
+//                    double latitude = filteredStopResult.getLocation().getLat();
+//                    double longitude = filteredStopResult.getLocation().getLng();
+//                    String stopName = filteredStopResult.getStop_name();
+//                }
+
+                // Plot the nearest stop from the user's current location
+
+                Collections.sort(results, new FilteredStopResult());
+                double latitude = results.get(0).getLocation().getLat();
+                double longitude = results.get(0).getLocation().getLng();
+                String stopName = results.get(0).getStop_name();
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(stopName)
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+            }
     }
 
     /**
      * Displays my location & corrects the layout of mylocation button
      * @param mMap
      */
-    public void displayMyLocation(GoogleMap mMap) {
-        try {
-            mMap.setMyLocationEnabled(true);
-            View locationButton = ((View) this.findViewById(1).getParent()).findViewById(2);
-            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-            rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            rlp.setMargins(0, 0, 30, 30);
-
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void displayMyLocation(GoogleMap mMap) {
+//        try {
+//            mMap.setMyLocationEnabled(true);
+//            View locationButton = ((View) this.findViewById(1).getParent()).findViewById(2);
+//            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+//            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+//            rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+//            rlp.setMargins(0, 0, 30, 30);
+//
+//        } catch (SecurityException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
+
+
