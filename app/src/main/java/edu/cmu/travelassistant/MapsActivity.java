@@ -2,6 +2,8 @@ package edu.cmu.travelassistant;
 
 import android.Manifest;
 import android.app.FragmentManager;
+import android.content.Context;
+
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -12,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -21,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
@@ -29,6 +31,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -57,10 +60,20 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import edu.cmu.travelassistant.data.Stop;
+import edu.cmu.travelassistant.util.AsyncResponse;
+import edu.cmu.travelassistant.util.FilteredStopResult;
+import edu.cmu.travelassistant.util.TravelAPITask;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, AsyncResponse {
 
     private GoogleMap mMap;
+    private boolean mPermissionDenied = false;
+
     ArrayList<LatLng> markerPoints;
     private static LatLng user;
     /**
@@ -68,7 +81,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      *
      * @see #onRequestPermissionsResult(int, String[], int[])
      */
+
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private Context context = this;
+    private static List<Stop> stopList = new ArrayList<>();
+
+    TravelAPITask travelAPITask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +124,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        travelAPITask = new TravelAPITask(this);
+        travelAPITask.asyncResponse = this;
+        travelAPITask.execute();
+        stopList = getAllStops();
     }
 
     public String readJSONFile() {
@@ -123,11 +146,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return json;
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera.
-     */
+    public List<Stop> getAllStops() {
+        String jsonData = readJSONFile();
+        List<Stop> stops = new ArrayList<>();
+
+        try {
+            JSONObject obj = new JSONObject(jsonData);
+            JSONArray stopsArray = obj.getJSONArray("stops");
+
+            for(int i = 0; i < stopsArray.length(); i++) {
+                JSONObject jsonObject = stopsArray.getJSONObject(i);
+
+                String stop_id = jsonObject.getString("stop_id");
+                String stopName = jsonObject.getString("stop_name");
+                String latitude = jsonObject.getString("stop_lat");
+                String longitude = jsonObject.getString("stop_lng");
+
+                stops.add(new Stop(stop_id, latitude, longitude, stopName));
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return stops;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -136,32 +179,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(6.0f);
         mMap.setMaxZoomPreference(21.0f);
 
-        String jsonData = readJSONFile();
-        try {
-            JSONObject obj = new JSONObject(jsonData);
-            JSONArray stopsArray = obj.getJSONArray("stops");
-
-            for(int i = 0; i < 50; i++) {
-                JSONObject jsonObject = stopsArray.getJSONObject(i);
-
-                String stopName = jsonObject.getString("stop_name");
-                Log.i("Stop name : ", stopName);
-
-                float latitude = Float.parseFloat(jsonObject.getString("stop_lat"));
-                float longitude = Float.parseFloat(jsonObject.getString("stop_lng"));
-
-                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).
-                        title(stopName).icon
-                        (BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
-            }
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
+//
+//                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).
+//                        title(stopName).icon
+//                        (BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pittsburgh, 14.0f));
 
-        this.displayMyLocation(mMap);
+//        this.displayMyLocation(mMap);
+    }
+
+    @Override
+    public void processNearestStops(List<FilteredStopResult> results) {
+            if(results != null) {
+                // Plot all nearby stops within a radius of 500m
+
+//                for(FilteredStopResult filteredStopResult : results) {
+//                    double latitude = filteredStopResult.getLocation().getLat();
+//                    double longitude = filteredStopResult.getLocation().getLng();
+//                    String stopName = filteredStopResult.getStop_name();
+//                }
+
+                // Plot the nearest stop from the user's current location
+
+                Collections.sort(results, new FilteredStopResult());
+                double latitude = results.get(0).getLocation().getLat();
+                double longitude = results.get(0).getLocation().getLng();
+                String stopName = results.get(0).getStop_name();
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(stopName)
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+            }
     }
 
     /**
@@ -369,4 +416,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
     }
+
 }
