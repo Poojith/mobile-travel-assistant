@@ -76,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     ArrayList<LatLng> markerPoints;
     private static LatLng user;
+    private static LatLng userLastLocation;
     /**
      * Request code for location permission request.
      *
@@ -185,8 +186,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                        (BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pittsburgh, 14.0f));
-
-//        this.displayMyLocation(mMap);
+        this.displayMyLocation(mMap);
     }
 
     @Override
@@ -229,9 +229,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void onMyLocationChange(Location arg0) {
                     // TODO Auto-generated method stub
                     user = new LatLng(arg0.getLatitude(), arg0.getLongitude());
-                    this.getDirectionsBetweenTwoPoints(user, new LatLng(40.454946,-79.9549824));
+                    double dist;
+                    if (user != null && userLastLocation != null) {
+                        dist = Math.sqrt(Math.pow(user.latitude - userLastLocation.latitude, 2) + Math.pow(user.longitude - userLastLocation.longitude, 2));
+                    } else {
+                        dist = 0;
+                    }
+                    if (dist < 100) {
+                        this.getDirectionsBetweenTwoPoints(user, new LatLng(40.454946,-79.9549824));
+                    }
+
                 }
                 public void getDirectionsBetweenTwoPoints(LatLng point1, LatLng point2) {
+                    userLastLocation = point1;
                     // Initializing
                     markerPoints = new ArrayList<LatLng>();
                     // Adding new item to the ArrayList
@@ -248,7 +258,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     MarkerOptions options = new MarkerOptions();
                     options.position(point1);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    mMap.addMarker(options);
+                    //mMap.addMarker(options);
 
                     options.position(point2);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
