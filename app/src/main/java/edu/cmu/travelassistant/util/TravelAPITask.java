@@ -17,14 +17,12 @@ public class TravelAPITask extends AsyncTask {
     public AsyncResponse asyncResponse = null;
 
     public TravelAPITask(Context context) {
-        Log.e("API Test", "Inside API task constructor");
         this.context = context;
     }
 
     @Override
     protected void onPreExecute() {
         api = AppConstants.initAPI(context);
-        Log.e("API Test", "Inside PreExecute");
         super.onPreExecute();
     }
 
@@ -35,8 +33,8 @@ public class TravelAPITask extends AsyncTask {
         try {
             Response<NearestStops> response = api.getNearestStops(coordinates).execute();
             NearestStops stops = response.body();
-            Log.e("Number of stops: ", String.valueOf(stops.getResults().size()));
-            Log.e("Stop name : " , stops.getResults().get(0).getName());
+//            Log.e("Number of stops: ", String.valueOf(stops.getResults().size()));
+//            Log.e("Stop name : " , stops.getResults().get(0).getName());
 
             List<Result> results = stops.getResults();
 

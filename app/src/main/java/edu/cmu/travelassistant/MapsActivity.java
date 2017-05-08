@@ -66,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import edu.cmu.travelassistant.data.Route;
 import edu.cmu.travelassistant.data.Stop;
 import edu.cmu.travelassistant.util.AsyncResponse;
 import edu.cmu.travelassistant.util.FilteredStopResult;
@@ -123,6 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Context context = this;
     private static List<Stop> stopList = new ArrayList<>();
+    private static List<Route> routeList = new ArrayList<>();
 
     TravelAPITask travelAPITask;
 
@@ -144,6 +146,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         //@end
 
+        stopList = getAllStops();
+        routeList = getAllRoutes();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -178,15 +182,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
         travelAPITask = new TravelAPITask(this);
         travelAPITask.asyncResponse = this;
-        stopList = getAllStops();
+
+        // TODO don't populate these lists every time the app is loaded. Have a flag and load it for the first time.
     }
 
-    public String readJSONFile() {
+    public String readJSONFile(String filename) {
         String json = null;
         try {
-            InputStream stream = this.getAssets().open("stops.json");
+            InputStream stream = this.getAssets().open(filename);
             int size = stream.available();
             byte[] buffer = new byte[size];
             stream.read(buffer);
@@ -199,8 +205,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return json;
     }
 
+    public List<Route> getAllRoutes() {
+        String jsonData = readJSONFile("routes.json");
+        List<Route> routes = new ArrayList<>();
+
+        try {
+            JSONObject obj = new JSONObject(jsonData);
+            JSONObject routesObject = obj.getJSONObject("bustime-response");
+            JSONArray routesArray = routesObject.getJSONArray("routes");
+
+            for(int i = 0; i < routesArray.length(); i++) {
+                JSONObject jsonObject = routesArray.getJSONObject(i);
+
+                String routeNumber = jsonObject.getString("rt");
+                String routeName = jsonObject.getString("rtnm");
+
+                routes.add(new Route(routeNumber, routeName));
+            }
+
+            Log.e("ROUTES", String.valueOf(routes.size()));
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return routes;
+
+    }
+
     public List<Stop> getAllStops() {
-        String jsonData = readJSONFile();
+        String jsonData = readJSONFile("stops.json");
         List<Stop> stops = new ArrayList<>();
 
         try {
@@ -217,6 +250,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 stops.add(new Stop(stop_id, latitude, longitude, stopName));
             }
+
+            Log.e("STOPS", String.valueOf(stops.size()));
+
         }
         catch (JSONException e) {
             e.printStackTrace();
