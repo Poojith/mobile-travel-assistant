@@ -533,7 +533,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         url.append("&type=" + interestingPlace);
         url.append("&sensor=true");
 
-        url.append("&key=" + "AIzaSyDhdw914cX9akpAvX2aYsfcMwDwAQb5SKw");
+        url.append("&key=" + "AIzaSyCH9KLEiSz0eVokA6mNqZ7kErmPloUIU9k");
 
         return url.toString();
     }
