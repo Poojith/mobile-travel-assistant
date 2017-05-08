@@ -9,23 +9,23 @@ import java.util.Comparator;
 public class FilteredStopResult implements Comparator<FilteredStopResult> {
     private Location location;
     private String stop_name;
-    private double currentLatitude = 40.452776;
-    private double currentLongitude = -79.94771;
+    private static double currentLatitude = 40.444521;
+    private static double currentLongitude = -79.9486052;
 
-    public double getCurrentLatitude() {
+    public static double getCurrentLatitude() {
         return currentLatitude;
     }
 
-    public void setCurrentLatitude(double currentLatitude) {
-        this.currentLatitude = currentLatitude;
+    public static void setCurrentLatitude(double latitude) {
+        currentLatitude = latitude;
     }
 
-    public double getCurrentLongitude() {
+    public static double getCurrentLongitude() {
         return currentLongitude;
     }
 
-    public void setCurrentLongitude(double currentLongitude) {
-        this.currentLongitude = currentLongitude;
+    public static void setCurrentLongitude(double longitude) {
+        currentLongitude = longitude;
     }
 
     public FilteredStopResult() {

@@ -30,8 +30,7 @@ public class TravelAPITask extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] objects) {
-
-        coordinates = "40.452776,-79.94771";
+        coordinates = Double.toString(FilteredStopResult.getCurrentLatitude()) + ", " + Double.toString(FilteredStopResult.getCurrentLongitude());
 
         try {
             Response<NearestStops> response = api.getNearestStops(coordinates).execute();
