@@ -172,6 +172,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String jsonData = readJSONFile("routes.json");
         List<Route> routes = new ArrayList<>();
 
+        if (jsonData == null) {
+            return routes;
+        }
+
         try {
             JSONObject obj = new JSONObject(jsonData);
             JSONObject routesObject = obj.getJSONObject("bustime-response");
@@ -534,7 +538,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         url.append("&type=" + interestingPlace);
         url.append("&sensor=true");
 
-        url.append("&key=" + "AIzaSyCH9KLEiSz0eVokA6mNqZ7kErmPloUIU9k");
+        url.append("&key=" + "AIzaSyDhdw914cX9akpAvX2aYsfcMwDwAQb5SKw");
 
         return url.toString();
     }
