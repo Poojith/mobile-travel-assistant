@@ -265,6 +265,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pittsburgh, 14.0f));
         this.displayMyLocation(mMap);
+
+        BusRoute b = new BusRoute();
+        Object[] searchData = new Object[5];
+        searchData[0] = mMap;
+        searchData[1] = "61A";
+        searchData[2] = "OUTBOUND";
+        searchData[3] = "20691";
+        searchData[4] = "21683";
+        b.execute(searchData);
     }
 
     @Override
