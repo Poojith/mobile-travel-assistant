@@ -70,7 +70,7 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
             mMap.addMarker(options);
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
     }
 

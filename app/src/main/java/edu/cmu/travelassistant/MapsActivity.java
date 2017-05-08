@@ -6,11 +6,8 @@ import android.content.Context;
 
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,13 +15,8 @@ import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -58,47 +50,17 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import edu.cmu.travelassistant.data.Stop;
 import edu.cmu.travelassistant.util.AsyncResponse;
 import edu.cmu.travelassistant.util.FilteredStopResult;
 import edu.cmu.travelassistant.util.TravelAPITask;
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 import android.widget.Button;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -113,7 +75,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static LatLng user;
     private static LatLng userLastLocation;
     private static LatLng userDestination;
+    private static LatLng busStartingPoint;
     private static boolean userLocationFoundFirstTime = false;
+    private static boolean busStringPointFound = false;
+    Button getNearbyAttractions;
     /**
      * Request code for location permission request.
      *
@@ -126,25 +91,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     TravelAPITask travelAPITask;
 
-    //@zack
     private int RADIUS = 1000;
     GoogleApiClient googleApiClient;
     LocationRequest locationRequest;
-    //@end
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        //@zack
         boolean available = isGooglePlayServicesAvailable();
         if (available == false) {
             finish();
         }
-        //@end
-
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -156,7 +115,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public static final String TAG = "place fragment";
             public Marker marker;
             FragmentManager fragmentManager = getFragmentManager();
-//            RoutesFragment routesFragment;
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
@@ -169,6 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker.setTitle(place.getName().toString());
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
                 userDestination = place.getLatLng();
+                getNearbyAttractions.performClick();
             }
 
             @Override
@@ -232,7 +191,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(6.0f);
         mMap.setMaxZoomPreference(21.0f);
 
-        //@zack
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
@@ -247,10 +205,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         Button placeButton = (Button) findViewById(R.id.btnPlace);
+        getNearbyAttractions = placeButton;
         placeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMap.clear();
                 String url = getUrl(userDestination.latitude, userDestination.longitude, "gym");
                 Object[] searchData = new Object[2];
                 searchData[0] = mMap;
@@ -260,14 +218,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.makeText(MapsActivity.this, "Nearby gym", Toast.LENGTH_LONG);
             }
         });
-        //@end
-
-
-
-//
-//                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).
-//                        title(stopName).icon
-//                        (BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pittsburgh, 14.0f));
         this.displayMyLocation(mMap);
@@ -277,7 +227,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void processNearestStops(List<FilteredStopResult> results) {
             if(results != null) {
                 // Plot all nearby stops within a radius of 500m
-
+                Collections.sort(results, new FilteredStopResult());
                 for(FilteredStopResult filteredStopResult : results) {
                     double latitude = filteredStopResult.getLocation().getLat();
                     double longitude = filteredStopResult.getLocation().getLng();
@@ -288,12 +238,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Plot the nearest stop from the user's current location
 
-//                Collections.sort(results, new FilteredStopResult());
-//                double latitude = results.get(0).getLocation().getLat();
-//                double longitude = results.get(0).getLocation().getLng();
-//                String stopName = results.get(0).getStop_name();
-//                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(stopName)
-//                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+                double latitude = results.get(0).getLocation().getLat();
+                double longitude = results.get(0).getLocation().getLng();
+                String stopName = results.get(0).getStop_name();
+                busStartingPoint = new LatLng(latitude, longitude);
             }
     }
 
@@ -316,21 +264,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // TODO Auto-generated method stub
                     user = new LatLng(arg0.getLatitude(), arg0.getLongitude());
                     if (!userLocationFoundFirstTime) {
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user, 16.0f));
                         FilteredStopResult.setCurrentLatitude(arg0.getLatitude());
                         FilteredStopResult.setCurrentLongitude(arg0.getLongitude());
                         travelAPITask.execute();
                     }
                     userLocationFoundFirstTime = true;
-                    double dist;
-                    if (user != null && userLastLocation != null) {
-                        dist = Math.sqrt(Math.pow(user.latitude - userLastLocation.latitude, 2) + Math.pow(user.longitude - userLastLocation.longitude, 2));
-                    } else {
-                        dist = 0;
+                    if (user != null && busStartingPoint != null && busStringPointFound) {
+                        this.getDirectionsBetweenTwoPoints(user, busStartingPoint);
                     }
-                    if (dist < 100) {
-                        this.getDirectionsBetweenTwoPoints(user, new LatLng(40.454946,-79.9549824));
-                    }
-
+                    busStringPointFound = true;
                 }
                 public void getDirectionsBetweenTwoPoints(LatLng point1, LatLng point2) {
                     userLastLocation = point1;
@@ -354,7 +297,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     options.position(point2);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                    mMap.addMarker(options);
+                    //mMap.addMarker(options);
 
                     LatLng origin = markerPoints.get(0);
                     LatLng dest = markerPoints.get(1);
