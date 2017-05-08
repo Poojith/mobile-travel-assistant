@@ -1,0 +1,692 @@
+{
+  "bustime-response": {
+    "routes": [
+      {
+        "rt": "1",
+        "rtnm": "FREEPORT ROAD",
+        "rtclr": "#c8c8c8",
+        "rtdd": "1",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "11",
+        "rtnm": "FINEVIEW",
+        "rtclr": "#c8c8c8",
+        "rtdd": "11",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "12",
+        "rtnm": "MCKNIGHT",
+        "rtclr": "#c8c8c8",
+        "rtdd": "12",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "13",
+        "rtnm": "BELLEVUE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "13",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "14",
+        "rtnm": "OHIO VALLEY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "14",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "15",
+        "rtnm": "CHARLES",
+        "rtclr": "#c8c8c8",
+        "rtdd": "15",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "16",
+        "rtnm": "BRIGHTON",
+        "rtclr": "#c8c8c8",
+        "rtdd": "16",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "17",
+        "rtnm": "SHADELAND",
+        "rtclr": "#c8c8c8",
+        "rtdd": "17",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "18",
+        "rtnm": "MANCHESTER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "18",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "19L",
+        "rtnm": "EMSWORTH LIMITED",
+        "rtclr": "#c8c8c8",
+        "rtdd": "19L",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "2",
+        "rtnm": "MOUNT ROYAL",
+        "rtclr": "#c8c8c8",
+        "rtdd": "2",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "20",
+        "rtnm": "KENNEDY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "20",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "21",
+        "rtnm": "CORAOPOLIS",
+        "rtclr": "#c8c8c8",
+        "rtdd": "21",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "22",
+        "rtnm": "MCCOY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "22",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "24",
+        "rtnm": "WEST PARK",
+        "rtclr": "#c8c8c8",
+        "rtdd": "24",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "26",
+        "rtnm": "CHARTIERS",
+        "rtclr": "#c8c8c8",
+        "rtdd": "26",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "27",
+        "rtnm": "FAIRYWOOD",
+        "rtclr": "#c8c8c8",
+        "rtdd": "27",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "28X",
+        "rtnm": "AIRPORT FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "28X",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "29",
+        "rtnm": "ROBINSON",
+        "rtclr": "#c8c8c8",
+        "rtdd": "29",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "31",
+        "rtnm": "BRIDGEVILLE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "31",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "36",
+        "rtnm": "BANKSVILLE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "36",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "38",
+        "rtnm": "GREEN TREE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "38",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "39",
+        "rtnm": "BROOKLINE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "39",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "4",
+        "rtnm": "TROY HILL",
+        "rtclr": "#c8c8c8",
+        "rtdd": "4",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "40",
+        "rtnm": "MOUNT WASHINGTON",
+        "rtclr": "#c8c8c8",
+        "rtdd": "40",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "41",
+        "rtnm": "BOWER HILL",
+        "rtclr": "#c8c8c8",
+        "rtdd": "41",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "43",
+        "rtnm": "BAILEY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "43",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "44",
+        "rtnm": "VIA KNOXVILLE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "44",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "48",
+        "rtnm": "ARLINGTON",
+        "rtclr": "#c8c8c8",
+        "rtdd": "48",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "51",
+        "rtnm": "CARRICK",
+        "rtclr": "#c8c8c8",
+        "rtdd": "51",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "51L",
+        "rtnm": "CARRICK LIMITED",
+        "rtclr": "#c8c8c8",
+        "rtdd": "51L",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "52L",
+        "rtnm": "HOMEVILLE LIMITED",
+        "rtclr": "#c8c8c8",
+        "rtdd": "52L",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "53",
+        "rtnm": "HOMESTEAD PARK",
+        "rtclr": "#c8c8c8",
+        "rtdd": "53",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "53L",
+        "rtnm": "HOMESTEAD PARK LIMITED",
+        "rtclr": "#c8c8c8",
+        "rtdd": "53L",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "54",
+        "rtnm": "NORTH SIDE-OAKLAND-SOUTH SIDE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "54",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "55",
+        "rtnm": "GLASSPORT",
+        "rtclr": "#c8c8c8",
+        "rtdd": "55",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "56",
+        "rtnm": "LINCOLN PLACE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "56",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "57",
+        "rtnm": "HAZELWOOD",
+        "rtclr": "#c8c8c8",
+        "rtdd": "57",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "58",
+        "rtnm": "GREENFIELD",
+        "rtclr": "#c8c8c8",
+        "rtdd": "58",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "59",
+        "rtnm": "MON VALLEY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "59",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "6",
+        "rtnm": "SPRING HILL",
+        "rtclr": "#c8c8c8",
+        "rtdd": "6",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "60",
+        "rtnm": "MCKEESPORT - WALNUT",
+        "rtclr": "#c8c8c8",
+        "rtdd": "60",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "61A",
+        "rtnm": "NORTH BRADDOCK",
+        "rtclr": "#c8c8c8",
+        "rtdd": "61A",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "61B",
+        "rtnm": "BRADDOCK-SWISSVALE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "61B",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "61C",
+        "rtnm": "MCKEESPORT-HOMESTEAD",
+        "rtclr": "#c8c8c8",
+        "rtdd": "61C",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "61D",
+        "rtnm": "MURRAY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "61D",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "64",
+        "rtnm": "LAWRENCEVILLE - WATERFRONT",
+        "rtclr": "#c8c8c8",
+        "rtdd": "64",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "65",
+        "rtnm": "SQUIRREL HILL",
+        "rtclr": "#c8c8c8",
+        "rtdd": "65",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "67",
+        "rtnm": "MONROEVILLE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "67",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "68",
+        "rtnm": "BRADDOCK HILLS",
+        "rtclr": "#c8c8c8",
+        "rtdd": "68",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "69",
+        "rtnm": "TRAFFORD",
+        "rtclr": "#c8c8c8",
+        "rtdd": "69",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "7",
+        "rtnm": "SPRING GARDEN",
+        "rtclr": "#c8c8c8",
+        "rtdd": "7",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "71",
+        "rtnm": "EDGEWOOD TOWN CENTER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "71",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "71A",
+        "rtnm": "NEGLEY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "71A",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "71B",
+        "rtnm": "HIGHLAND PARK",
+        "rtclr": "#c8c8c8",
+        "rtdd": "71B",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "71C",
+        "rtnm": "POINT BREEZE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "71C",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "71D",
+        "rtnm": "HAMILTON",
+        "rtclr": "#c8c8c8",
+        "rtdd": "71D",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "74",
+        "rtnm": "HOMEWOOD-SQUIRREL HILL",
+        "rtclr": "#c8c8c8",
+        "rtdd": "74",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "75",
+        "rtnm": "ELLSWORTH",
+        "rtclr": "#c8c8c8",
+        "rtdd": "75",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "77",
+        "rtnm": "PENN HILLS",
+        "rtclr": "#c8c8c8",
+        "rtdd": "77",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "78",
+        "rtnm": "OAKMONT",
+        "rtclr": "#c8c8c8",
+        "rtdd": "78",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "79",
+        "rtnm": "EAST HILLS",
+        "rtclr": "#c8c8c8",
+        "rtdd": "79",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "8",
+        "rtnm": "PERRYSVILLE",
+        "rtclr": "#c8c8c8",
+        "rtdd": "8",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "81",
+        "rtnm": "OAK HILL",
+        "rtclr": "#c8c8c8",
+        "rtdd": "81",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "82",
+        "rtnm": "LINCOLN",
+        "rtclr": "#c8c8c8",
+        "rtdd": "82",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "83",
+        "rtnm": "BEDFORD HILL",
+        "rtclr": "#c8c8c8",
+        "rtdd": "83",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "86",
+        "rtnm": "LIBERTY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "86",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "87",
+        "rtnm": "FRIENDSHIP",
+        "rtclr": "#c8c8c8",
+        "rtdd": "87",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "88",
+        "rtnm": "PENN",
+        "rtclr": "#c8c8c8",
+        "rtdd": "88",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "89",
+        "rtnm": "GARFIELD COMMONS",
+        "rtclr": "#c8c8c8",
+        "rtdd": "89",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "91",
+        "rtnm": "BUTLER STREET",
+        "rtclr": "#c8c8c8",
+        "rtdd": "91",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "93",
+        "rtnm": "LAWRENCEVILLE - HAZELWOOD",
+        "rtclr": "#c8c8c8",
+        "rtdd": "93",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "G2",
+        "rtnm": "WEST BUSWAY",
+        "rtclr": "#c8c8c8",
+        "rtdd": "G2",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "G3",
+        "rtnm": "MOON FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "G3",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "G31",
+        "rtnm": "BRIDGEVILLE FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "G31",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "O1",
+        "rtnm": "ROSS FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "O1",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "O12",
+        "rtnm": "MCKNIGHT FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "O12",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "O5",
+        "rtnm": "THOMPSON RUN FLYER VIA 279",
+        "rtclr": "#c8c8c8",
+        "rtdd": "O5",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P1",
+        "rtnm": "EAST BUSWAY-ALL STOPS",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P1",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P10",
+        "rtnm": "ALLEGHENY VALLEY FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P10",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P12",
+        "rtnm": "HOLIDAY PARK FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P12",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P13",
+        "rtnm": "MOUNT ROYAL FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P13",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P16",
+        "rtnm": "PENN HILLS FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P16",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P17",
+        "rtnm": "LINCOLN PARK FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P17",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P2",
+        "rtnm": "EAST BUSWAY SHORT",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P2",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P3",
+        "rtnm": "EAST BUSWAY-OAKLAND",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P3",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P67",
+        "rtnm": "MONROEVILLE FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P67",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P68",
+        "rtnm": "BRADDOCK HILLS FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P68",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P69",
+        "rtnm": "TRAFFORD FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P69",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P7",
+        "rtnm": "MCKEESPORT FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P7",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P71",
+        "rtnm": "SWISSVALE FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P71",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P76",
+        "rtnm": "LINCOLN HIGHWAY FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P76",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "P78",
+        "rtnm": "OAKMONT FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "P78",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "Y1",
+        "rtnm": "LARGE FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "Y1",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "Y45",
+        "rtnm": "BALDWIN MANOR FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "Y45",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "Y46",
+        "rtnm": "ELIZABETH FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "Y46",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "Y47",
+        "rtnm": "CURRY FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "Y47",
+        "rtpidatafeed": "Port Authority Bus"
+      },
+      {
+        "rt": "Y49",
+        "rtnm": "PROSPECT FLYER",
+        "rtclr": "#c8c8c8",
+        "rtdd": "Y49",
+        "rtpidatafeed": "Port Authority Bus"
+      }
+    ]
+  }
+}
