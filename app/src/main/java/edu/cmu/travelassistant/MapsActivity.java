@@ -112,6 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ArrayList<LatLng> markerPoints;
     private static LatLng user;
     private static LatLng userLastLocation;
+    private static LatLng userDestination;
     /**
      * Request code for location permission request.
      *
@@ -124,14 +125,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     TravelAPITask travelAPITask;
 
-
-
     //@zack
-    private int RADIUS = 500000;
+    private int RADIUS = 1000;
     GoogleApiClient googleApiClient;
     LocationRequest locationRequest;
     //@end
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +167,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker.setSnippet(place.getName().toString());
                 marker.setTitle(place.getName().toString());
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+                userDestination = place.getLatLng();
             }
 
             @Override
@@ -252,7 +251,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 mMap.clear();
-                String url = getUrl(user.latitude, user.longitude, "gym");
+                String url = getUrl(userDestination.latitude, userDestination.longitude, "gym");
                 Object[] searchData = new Object[2];
                 searchData[0] = mMap;
                 searchData[1] = url;
@@ -544,7 +543,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         url.append("&type=" + interestingPlace);
         url.append("&sensor=true");
 
-        url.append("&key=" + "AIzaSyDYZNFBr5XGQeHNoB004O1m4lVpAU9Au8Q");
+        url.append("&key=" + "AIzaSyDhdw914cX9akpAvX2aYsfcMwDwAQb5SKw");
 
         return url.toString();
     }
