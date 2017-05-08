@@ -118,6 +118,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
+        autocompleteFragment.getView().setBackgroundColor(Color.WHITE);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             public static final String TAG = "place fragment";
             public Marker marker;
