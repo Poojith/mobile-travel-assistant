@@ -113,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static LatLng user;
     private static LatLng userLastLocation;
     private static LatLng userDestination;
+    private static boolean userLocationFoundFirstTime = false;
     /**
      * Request code for location permission request.
      *
@@ -179,7 +180,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         travelAPITask = new TravelAPITask(this);
         travelAPITask.asyncResponse = this;
-        travelAPITask.execute();
         stopList = getAllStops();
     }
 
@@ -278,20 +278,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if(results != null) {
                 // Plot all nearby stops within a radius of 500m
 
-//                for(FilteredStopResult filteredStopResult : results) {
-//                    double latitude = filteredStopResult.getLocation().getLat();
-//                    double longitude = filteredStopResult.getLocation().getLng();
-//                    String stopName = filteredStopResult.getStop_name();
-//                }
+                for(FilteredStopResult filteredStopResult : results) {
+                    double latitude = filteredStopResult.getLocation().getLat();
+                    double longitude = filteredStopResult.getLocation().getLng();
+                    String stopName = filteredStopResult.getStop_name();
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(stopName)
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+                }
 
                 // Plot the nearest stop from the user's current location
 
-                Collections.sort(results, new FilteredStopResult());
-                double latitude = results.get(0).getLocation().getLat();
-                double longitude = results.get(0).getLocation().getLng();
-                String stopName = results.get(0).getStop_name();
-                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(stopName)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+//                Collections.sort(results, new FilteredStopResult());
+//                double latitude = results.get(0).getLocation().getLat();
+//                double longitude = results.get(0).getLocation().getLng();
+//                String stopName = results.get(0).getStop_name();
+//                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(stopName)
+//                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
             }
     }
 
@@ -313,6 +315,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void onMyLocationChange(Location arg0) {
                     // TODO Auto-generated method stub
                     user = new LatLng(arg0.getLatitude(), arg0.getLongitude());
+                    if (!userLocationFoundFirstTime) {
+                        FilteredStopResult.setCurrentLatitude(arg0.getLatitude());
+                        FilteredStopResult.setCurrentLongitude(arg0.getLongitude());
+                        travelAPITask.execute();
+                    }
+                    userLocationFoundFirstTime = true;
                     double dist;
                     if (user != null && userLastLocation != null) {
                         dist = Math.sqrt(Math.pow(user.latitude - userLastLocation.latitude, 2) + Math.pow(user.longitude - userLastLocation.longitude, 2));
