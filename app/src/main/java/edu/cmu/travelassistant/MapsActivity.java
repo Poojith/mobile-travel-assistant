@@ -269,10 +269,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         BusRoute b = new BusRoute();
         Object[] searchData = new Object[5];
         searchData[0] = mMap;
-        searchData[1] = "61A";
+        searchData[1] = "71C";
         searchData[2] = "INBOUND";
-        searchData[3] = "7055";
-        searchData[4] = "3150";
+        searchData[3] = "8881";
+        searchData[4] = "2631";
         b.execute(searchData);
     }
 

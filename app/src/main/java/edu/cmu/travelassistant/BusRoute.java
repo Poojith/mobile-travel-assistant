@@ -38,6 +38,7 @@ public class BusRoute extends AsyncTask<Object, String, String> {
     String url;
     String routeDirection;
     String startStop;
+    int stopFound = 0;
     String endStop;
 
     @Override
@@ -132,16 +133,22 @@ public class BusRoute extends AsyncTask<Object, String, String> {
             int i = 0;
             for (; i < numberOfPlaces; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
-                if (jsonObject.has("stpid"))
-                    Log.e("Stop", jsonObject.getString("stpid"));
                 if (jsonObject.has("stpid") && jsonObject.getString("stpid").equals(startStop)) {
+                    stopFound = 1;
+                    break;
+                }
+                if (jsonObject.has("stpid") && jsonObject.getString("stpid").equals(endStop)) {
+                    stopFound = 2;
                     break;
                 }
             }
             for (; i < numberOfPlaces; i++) {
                 points.add(jsonArray.getJSONObject(i).toString());
                 jsonObject = jsonArray.getJSONObject(i);
-                if (jsonObject.has("stpid")&& jsonObject.getString("stpid").equals(endStop)) {
+                if (stopFound == 1 && jsonObject.has("stpid")&& jsonObject.getString("stpid").equals(endStop)) {
+                    break;
+                }
+                if (stopFound == 2 && jsonObject.has("stpid")&& jsonObject.getString("stpid").equals(startStop)) {
                     break;
                 }
             }
