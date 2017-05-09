@@ -270,9 +270,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Object[] searchData = new Object[5];
         searchData[0] = mMap;
         searchData[1] = "61A";
-        searchData[2] = "OUTBOUND";
-        searchData[3] = "20691";
-        searchData[4] = "21683";
+        searchData[2] = "INBOUND";
+        searchData[3] = "7055";
+        searchData[4] = "3150";
         b.execute(searchData);
     }
 

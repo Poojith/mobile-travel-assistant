@@ -132,6 +132,8 @@ public class BusRoute extends AsyncTask<Object, String, String> {
             int i = 0;
             for (; i < numberOfPlaces; i++) {
                 jsonObject = jsonArray.getJSONObject(i);
+                if (jsonObject.has("stpid"))
+                    Log.e("Stop", jsonObject.getString("stpid"));
                 if (jsonObject.has("stpid") && jsonObject.getString("stpid").equals(startStop)) {
                     break;
                 }
