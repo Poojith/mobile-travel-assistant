@@ -37,7 +37,7 @@ import java.util.Set;
 
 public class RealTimeAPITask extends AsyncTask {
     String queryResult;
-    String baseUrl = "http://truetime.portauthority.org/bustime/api/v3/getstops?key=QzLiAG6tuHzPqqii3ETFuwTsZ&format=json&rtpidatafeed=Port%20Authority%20Bus&dir=INBOUND&rt=";
+    String baseUrl = "http://truetime.portauthority.org/bustime/api/v3/getstops?key=DNtdvbsiqryXXzC5cvCeSntuX&format=json&rtpidatafeed=Port%20Authority%20Bus&dir=INBOUND&rt=";
 
     GoogleMap mMap;
     private Context context;
