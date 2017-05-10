@@ -130,11 +130,16 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
                 options.position(position);
                 options.title(placeName);
 //                options.snippet(vicinity + ":" + rating + ":" + opening_now);
-                options.snippet(vicinity);
+                if (rating == null) {
+                    rating = "UNKNOWN";
+                }
+                if (opening_now == null) {
+                    opening_now = "UNKNOWN";
+                }
+                options.snippet(vicinity + ":" + rating + ":" + opening_now);
+                options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_rest2));
 
                 mMap.addMarker(options);
-
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
             } catch(Exception e) {
