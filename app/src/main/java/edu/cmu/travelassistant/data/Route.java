@@ -11,7 +11,6 @@ public class Route {
     private String routeNumber;
     private String routeName;
 
-    //TODO Map of routeNumber - Stops (change value from String to Stops)
     private static Map<Route, List<Stop>> routeToStopsMap = new HashMap<>();
 
     public static void setRouteToStopsMap(Map<Route, List<Stop>> routeToStopsMap) {

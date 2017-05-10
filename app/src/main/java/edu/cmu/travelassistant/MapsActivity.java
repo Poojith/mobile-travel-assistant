@@ -170,6 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
+
         autocompleteFragment.getView().setBackgroundColor(Color.WHITE);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             public static final String TAG = "place fragment";
@@ -209,6 +210,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     placeMarkers.clear();
                 }
 
+                realTimeAPITask.execute();
                 showDestinationStops();
             }
 
@@ -292,7 +294,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }
                 }
-                Toast.makeText(this, "Sorry, there were no direct routes for this location. Please enter a different destination.",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Sorry, there are no direct routes for this location. Please enter a different destination.",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -503,7 +505,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     user = new LatLng(arg0.getLatitude(), arg0.getLongitude());
                     if (!userLocationFoundFirstTime) {
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user, 15.0f));
-                        realTimeAPITask.execute();
+//                        realTimeAPITask.execute();
                     }
                     userLocationFoundFirstTime = true;
                 }
