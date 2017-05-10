@@ -224,7 +224,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     placeMarkers.clear();
                 }
 
-                realTimeAPITask.execute();
+                //realTimeAPITask.execute();
                 showDestinationStops();
             }
 
@@ -530,7 +530,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     user = new LatLng(arg0.getLatitude(), arg0.getLongitude());
                     if (!userLocationFoundFirstTime) {
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user, 15.0f));
-//                        realTimeAPITask.execute();
+                        realTimeAPITask.execute();
                     }
                     userLocationFoundFirstTime = true;
                 }

@@ -35,7 +35,7 @@ public class ArrivalTimeTask extends AsyncTask {
     Route finalRoute;
 
     String queryResult;
-    String baseUrl = "http://truetime.portauthority.org/bustime/api/v3/getpredictions?key=QzLiAG6tuHzPqqii3ETFuwTsZ&format=json&rtpidatafeed=Port%20Authority%20Bus&dir=INBOUND&rt=";
+    String baseUrl = "http://truetime.portauthority.org/bustime/api/v3/getpredictions?key=DNtdvbsiqryXXzC5cvCeSntuX&format=json&rtpidatafeed=Port%20Authority%20Bus&dir=INBOUND&rt=";
 
     Map<Stop, Map<Route, List<TimePrediction>>> stopsRoutesAndPredictionsMap = new HashMap<>();
     Map<Stop, Marker> stopToMarkerMap;
