@@ -61,25 +61,6 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
         showPlaces(placeList);
     }
 
-
-//    private void showPlaces(List<HashMap<String, String>> placeList) {
-//        for (int i = 0; i < placeList.size(); i++) {
-//            MarkerOptions options = new MarkerOptions();
-//            HashMap<String, String> place = placeList.get(i);
-//            double latitude = Double.parseDouble(place.get("latitude"));
-//            double longitude = Double.parseDouble(place.get("longitude"));
-//            String placeName = place.get("placeName");
-//            String vicinity = place.get("vicinity");
-//            LatLng position = new LatLng(latitude, longitude);
-//            options.position(position);
-//            options.title(placeName + "&" + vicinity);
-//            mMap.addMarker(options);
-//            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-//            mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-//            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-//        }
-//    }
-
     private HashMap<String, String> getPlace(JSONObject jsonPlace) {
         HashMap<String, String> placeMap = new HashMap<>();
         String nameOfPlace = "NULL";
@@ -136,8 +117,14 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
                 LatLng position = new LatLng(latitude, longitude);
                 options.position(position);
                 options.title(placeName);
-//                options.snippet(vicinity + ":" + rating + ":" + opening_now);
-                options.snippet(vicinity);
+                if (rating == null) {
+                    rating = "UNKNOWN";
+                }
+                if (opening_now == null) {
+                    opening_now = "UNKNOWN";
+                }
+                options.snippet(vicinity + ":" + rating + ":" + opening_now);
+                options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_rest2));
 
                 Marker marker = mMap.addMarker(options);
                 marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.restaurant));
@@ -146,9 +133,11 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
                 Log.e("Size of marker", String.valueOf(markers.size()));
 
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                mMap.addMarker(options);
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
-            } catch(Exception e) {
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+            } catch (Exception e) {
                 continue;
             }
         }
@@ -209,55 +198,4 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
         }
         return listOfPlaces;
     }
-
-//    private HashMap<String, String> getPlace(JSONObject jsonPlace) {
-//        HashMap<String, String> placeMap = new HashMap<>();
-//        String nameOfPlace = "NULL";
-//        String vicinity = "NULL";
-//        String latitude = "";
-//        String longitude = "";
-//        String reference = "";
-//
-//        try {
-//            if (!jsonPlace.isNull("name")) {
-//                nameOfPlace = jsonPlace.getString("name");
-//            }
-//            if (!jsonPlace.isNull("vicinity")) {
-//                vicinity = jsonPlace.getString("vicinity");
-//            }
-//            latitude = jsonPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
-//            longitude = jsonPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");
-//            reference = jsonPlace.getString("reference");
-//            placeMap.put("placeName", nameOfPlace);
-//            placeMap.put("vicinity", vicinity);
-//            placeMap.put("latitude", latitude);
-//            placeMap.put("longitude", longitude);
-//            placeMap.put("reference", reference);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        return placeMap;
-//    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
