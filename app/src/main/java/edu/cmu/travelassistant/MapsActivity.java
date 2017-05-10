@@ -145,7 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TravelAPITask travelAPITask;
     RealTimeAPITask realTimeAPITask;
 
-    private int RADIUS = 1000;
+    private int RADIUS = 300;
     GoogleApiClient googleApiClient;
     LocationRequest locationRequest;
 
@@ -400,13 +400,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("title", title2);
                 title.setText(title2);
 
-//                TextView tvsnippet = new TextView(context);
-//                String snippet = marker.getSnippet();
-//                Log.e("snippet", snippet);
-//                tvsnippet.setText(snippet);
+                String snippet = marker.getSnippet();
+                String[] sniInfos = snippet.split(":");
+                TextView tv1 = new TextView(context);
+                tv1.setText("vicinity: " + sniInfos[0]);
+                TextView tv2 = new TextView(context);
+                tv2.setText("rating: " + sniInfos[1]);
+                TextView tv3 = new TextView(context);
+                if (sniInfos[2].equals("true")) {
+                    tv3.setText("It is opened now");
+                } else {
+                    tv3.setText("It is closed now");
+                }
 
                 info.addView(title);
-                //info.addView(tvsnippet);
+                info.addView(tv1);
+                info.addView(tv2);
+                info.addView(tv3);
 
                 return info;
             }
