@@ -7,6 +7,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +37,11 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
     GoogleMap mMap;
     String url;
 
+    private static List<Marker> markers = new ArrayList<>();
+
+    public static List<Marker> getMarkers() {
+        return markers;
+    }
 
     @Override
     protected String doInBackground(Object... params) {
@@ -93,6 +99,7 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
     }
 
     private void showPlaces(List<HashMap<String, String>> placeList) {
+
         for (int i = 0; i < placeList.size(); i++) {
             MarkerOptions options = new MarkerOptions();
             HashMap<String, String> place = placeList.get(i);
@@ -119,7 +126,15 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
                 options.snippet(vicinity + ":" + rating + ":" + opening_now);
                 options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_rest2));
 
+                Marker marker = mMap.addMarker(options);
+                marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.restaurant));
+                markers.add(marker);
+
+                Log.e("Size of marker", String.valueOf(markers.size()));
+
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 mMap.addMarker(options);
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
             } catch (Exception e) {

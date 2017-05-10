@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -106,6 +105,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static LatLng busStartingPoint;
     private static LatLng busEndingPoint;
     private static boolean userLocationFoundFirstTime = false;
+    private static boolean busStringPointFound = false;
+    List<Marker> busStopMarkers = new ArrayList<>();
+
+    List<Marker> placeMarkers = PlaceRequest.getMarkers();
 
     private static String distance = "";
     private static String duration = "";
@@ -120,32 +123,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Context context = this;
-
     private List<Stop> sourceList = new ArrayList<>();
-
     public static LatLng getUserDestination() {
         return userDestination;
     }
-
     private static List<Stop> stopsList = new ArrayList<>();
     public static List<Route> routeList = new ArrayList<>();
-
-
     private static Map<String, Stop> stopIDToStopMap = Stop.getMapOfStops();
-
-
     private static Map<String, Route> routeNameToRouteMap = Route.getRouteNameToRouteMap();
-
     public static List<Route> getRouteList() {
         return routeList;
     }
-
     public static List<Stop> getStopsList() {
         return stopsList;
     }
 
-
-    TravelAPITask travelAPITask;
     RealTimeAPITask realTimeAPITask;
 
     private int RADIUS = 300;
@@ -179,6 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //TODO populate these lists only the first time the user loads the app. Have a flag to track this.
         stopsList = getAllStops();
+
         routeList = getAllRoutes();
 
         Stop.setMapOfStops(stopIDToStopMap);
@@ -212,8 +205,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker.setSnippet(place.getName().toString());
                 marker.setTitle(place.getName().toString());
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user, 14.0f));
                 userDestination = place.getLatLng();
                 getNearbyAttractions.performClick();
+
+                if(busStopMarkers.size() != 0) {
+                    for(Marker marker : busStopMarkers) {
+                        marker.remove();
+                    }
+                    busStopMarkers.clear();
+                }
+
+                if(placeMarkers.size() != 0) {
+                    for(Marker marker : placeMarkers) {
+                        marker.remove();
+                    }
+                    placeMarkers.clear();
+                }
+
                 showDestinationStops();
             }
 
@@ -238,15 +247,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
-        for (Stop stop : destinationList) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(stop.getLat()), Double.parseDouble(stop.getLon()))).title(stop.getStpnm())
+        for (Stop destinationStop : destinationList) {
+            Marker destinationPlace = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(destinationStop.getLat()), Double.parseDouble(destinationStop.getLon()))).title(destinationStop.getStpnm())
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
-            List<Route> routes = stop.getRoutesAtThisStop();
+            busStopMarkers.add(destinationPlace);
+
+
+            List<Route> routes = destinationStop.getRoutesAtThisStop();
             if (routes != null) {
                 List<BusStopResult> results = new ArrayList<>();
                 for (Route route : routes) {
                     String routeNumber = route.getRouteNumber();
-                    BusStopResult result = new BusStopResult(routeNumber, "INBOUND", stop.getStpid());
+                    BusStopResult result = new BusStopResult(routeNumber, "INBOUND", destinationStop.getStpid());
                     results.add(result);
 
                     for(Stop sourceStop : sourceList) {
@@ -258,12 +270,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         commonRoute = route;
 
                                         busStartingPoint = new LatLng(Double.parseDouble(sourceStop.getLat()), Double.parseDouble(sourceStop.getLon()));
-                                        busEndingPoint = new LatLng(Double.parseDouble(stop.getLat()), Double.parseDouble(stop.getLon()));
+                                        busEndingPoint = new LatLng(Double.parseDouble(destinationStop.getLat()), Double.parseDouble(destinationStop.getLon()));
                                         getDirectionsBetweenTwoPoints(user, busStartingPoint);
                                         getDirectionsBetweenTwoPoints(busEndingPoint, userDestination);
 
                                         BusRoute b = new BusRoute();
-
                                         Object[] searchData = new Object[5];
                                         Log.e("Common route", route.getRouteNumber());
                                         searchData[0] = mMap;
@@ -271,18 +282,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         searchData[1] = route.getRouteNumber();
                                         Log.e("Start stop name", sourceStop.getStpnm());
                                         searchData[2] = "INBOUND";
-                                        Log.e("Stop ID", stop.getStpid());
+                                        Log.e("Stop ID", destinationStop.getStpid());
                                         searchData[3] = sourceStop.getStpid();
-                                        Log.e("Stop destination name", stop.getStpnm());
-                                        searchData[4] = stop.getStpid();
+                                        Log.e("Stop destination name", destinationStop.getStpnm());
+                                        searchData[4] = destinationStop.getStpid();
                                         b.execute(searchData);
+
+                                        Marker sourceMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(sourceStop.getLat()), Double.parseDouble(sourceStop.getLon()))).title(sourceStop.getStpnm())
+                                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+                                        Marker destinationMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(destinationStop.getLat()), Double.parseDouble(destinationStop.getLon()))).title(destinationStop.getStpnm())
+                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                        busStopMarkers.add(sourceMarker);
+                                        busStopMarkers.add(destinationMarker);
 
                                         calculateAndDisplayDistanceAndDurationBetween(user, busStartingPoint);
                                         showNotification("Catch Bus " + searchData[1] + " in 17 minutes", duration + " minute walk to " + sourceStop.getStpnm());
-                                        //TODO change icon for the chosen
 
-                                        mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(stop.getLat()), Double.parseDouble(stop.getLon()))).title(stop.getStpnm())
-                                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
                                         return;
                                     }
                                 }
@@ -290,6 +306,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }
                 }
+                Toast.makeText(this, "Sorry, there were no direct routes for this location. Please enter a different destination.",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -389,7 +406,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String longitude = jsonObject.getString("stop_lng");
 
                 Stop stop = new Stop(stop_id, stopName, latitude, longitude);
-
                 stopIDToStopMap.put(stop_id, stop);
                 stopMasterData.add(stop);
             }
@@ -408,6 +424,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public View getInfoWindow(Marker marker) {
                 return null;
             }
+
 
             @Override
             public View getInfoContents(Marker marker) {
