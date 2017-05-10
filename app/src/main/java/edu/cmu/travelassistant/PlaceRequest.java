@@ -55,25 +55,6 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
         showPlaces(placeList);
     }
 
-
-//    private void showPlaces(List<HashMap<String, String>> placeList) {
-//        for (int i = 0; i < placeList.size(); i++) {
-//            MarkerOptions options = new MarkerOptions();
-//            HashMap<String, String> place = placeList.get(i);
-//            double latitude = Double.parseDouble(place.get("latitude"));
-//            double longitude = Double.parseDouble(place.get("longitude"));
-//            String placeName = place.get("placeName");
-//            String vicinity = place.get("vicinity");
-//            LatLng position = new LatLng(latitude, longitude);
-//            options.position(position);
-//            options.title(placeName + "&" + vicinity);
-//            mMap.addMarker(options);
-//            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-//            mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-//            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-//        }
-//    }
-
     private HashMap<String, String> getPlace(JSONObject jsonPlace) {
         HashMap<String, String> placeMap = new HashMap<>();
         String nameOfPlace = "NULL";
@@ -129,14 +110,13 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
                 LatLng position = new LatLng(latitude, longitude);
                 options.position(position);
                 options.title(placeName);
-//                options.snippet(vicinity + ":" + rating + ":" + opening_now);
                 options.snippet(vicinity);
 
                 mMap.addMarker(options);
 
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
             } catch(Exception e) {
                 continue;
             }
