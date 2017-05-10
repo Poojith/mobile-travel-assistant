@@ -123,11 +123,11 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
                 if (opening_now == null) {
                     opening_now = "UNKNOWN";
                 }
-                options.snippet(vicinity + ":" + rating + ":" + opening_now);
+                options.snippet("Address: " + vicinity + "ZACK" + rating + "ZACK" + opening_now);
                 options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_rest2));
 
                 Marker marker = mMap.addMarker(options);
-                marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.restaurant));
+                marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_rest2));
                 markers.add(marker);
 
                 Log.e("Size of marker", String.valueOf(markers.size()));

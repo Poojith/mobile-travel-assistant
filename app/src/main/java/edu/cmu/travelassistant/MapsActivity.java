@@ -441,22 +441,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 title.setText(title2);
 
                 String snippet = marker.getSnippet();
-                String[] sniInfos = snippet.split(":");
-                TextView tv1 = new TextView(context);
-                tv1.setText("vicinity: " + sniInfos[0]);
-                TextView tv2 = new TextView(context);
-                tv2.setText("rating: " + sniInfos[1]);
-                TextView tv3 = new TextView(context);
-                if (sniInfos[2].equals("true")) {
-                    tv3.setText("It is opened now");
-                } else {
-                    tv3.setText("It is closed now");
+                if (snippet != null && snippet.startsWith("Address")) {
+                    String[] sniInfos = snippet.split("ZACK");
+                    Log.d("length", sniInfos.length + "");
+                    TextView tv1 = new TextView(context);
+                    TextView tv2 = new TextView(context);
+                    TextView tv3 = new TextView(context);
+                    if (sniInfos.length == 3) {
+                        tv1.setText("vicinity: " + sniInfos[0]);
+                        tv2.setText("rating: " + sniInfos[1]);
+                        if (sniInfos[2].equals("true")) {
+                            tv3.setText("It is opened now");
+                        } else {
+                            tv3.setText("It is closed now");
+                        }
+                        info.addView(title);
+                        info.addView(tv1);
+                        info.addView(tv2);
+                        info.addView(tv3);
+                    }
+                    else {
+                        info.addView(title);
+                    }
                 }
 
-                info.addView(title);
-                info.addView(tv1);
-                info.addView(tv2);
-                info.addView(tv3);
 
                 return info;
             }
