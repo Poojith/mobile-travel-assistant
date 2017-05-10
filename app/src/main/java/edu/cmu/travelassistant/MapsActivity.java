@@ -332,6 +332,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void showNotification(String title, String content) {
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("CalendarEntry", true);
+
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
         Resources r = getResources();
         Notification notification = new NotificationCompat.Builder(this)
