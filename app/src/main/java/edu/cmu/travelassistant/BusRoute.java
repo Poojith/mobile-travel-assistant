@@ -53,7 +53,6 @@ public class BusRoute extends AsyncTask<Object, String, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.e("QueryResult", queryResult);
         return queryResult;
     }
 
@@ -124,7 +123,7 @@ public class BusRoute extends AsyncTask<Object, String, String> {
             jsonObject = jsonObject.getJSONObject("bustime-response");
             jsonArray = jsonObject.getJSONArray("ptr");
             for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObject = jsonArray.getJSONObject(0);
+                jsonObject = jsonArray.getJSONObject(i);
                 if (jsonObject.getString("rtdir").equals(routeDirection)) {
                     break;
                 }

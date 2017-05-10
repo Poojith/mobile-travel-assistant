@@ -102,8 +102,7 @@ public class RealTimeAPITask extends AsyncTask {
                 stops.add(stop);
             }
         } catch (JSONException e) {
-            //e.printStackTrace();
-            ;
+            e.printStackTrace();
         }
 
         return stops;
