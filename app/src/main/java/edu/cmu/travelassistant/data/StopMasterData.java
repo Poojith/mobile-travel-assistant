@@ -4,14 +4,14 @@ package edu.cmu.travelassistant.data;
  * Created by poojith on 5/6/17.
  */
 
-public class Stop {
+public class StopMasterData {
 
     private String stop_id;
     private String stop_lat;
     private String stop_lng;
     private String stop_name;
 
-    public Stop(String stop_id, String stop_lat, String stop_lng, String stop_name) {
+    public StopMasterData(String stop_id, String stop_lat, String stop_lng, String stop_name) {
         this.stop_id = stop_id;
         this.stop_lat = stop_lat;
         this.stop_lng = stop_lng;

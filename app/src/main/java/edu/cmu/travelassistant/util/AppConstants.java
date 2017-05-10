@@ -36,4 +36,29 @@ public class AppConstants {
 
         return retrofit.create(TravelAPI.class);
     }
+
+
+//    public static RealTimeBusAPI initBusAPI(final Context context) {
+//        final String PAC_BUS_STOPS_URL
+//                = "http://truetime.portauthority.org/bustime/api/v3/getstops?key=Gg5eAVrmgNc3U5kC5PcFfcQGz&format=json&rtpidatafeed=Port%20Authority%20Bus";
+//
+//        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+//        builder.addInterceptor(new Interceptor() {
+//            @Override
+//            public Response intercept(Chain chain) throws IOException {
+//                Request.Builder ongoing = chain.request().newBuilder();
+//                return chain.proceed(ongoing.build());
+//            }
+//        });
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(PAC_BUS_STOPS_URL)
+//                .client(builder.build())
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        return retrofit.create(RealTimeBusAPI.class);
+//    }
+
+
 }

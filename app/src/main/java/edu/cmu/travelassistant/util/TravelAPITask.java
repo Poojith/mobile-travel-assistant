@@ -3,10 +3,14 @@ package edu.cmu.travelassistant.util;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import edu.cmu.travelassistant.data.Route;
+import edu.cmu.travelassistant.data.StopMasterData;
 import retrofit2.Response;
 
 public class TravelAPITask extends AsyncTask {
@@ -14,6 +18,7 @@ public class TravelAPITask extends AsyncTask {
     private TravelAPI api;
     private String coordinates = null;
     private List<FilteredStopResult> filteredStopResults = new ArrayList<>();
+
     public AsyncResponse asyncResponse = null;
 
     public TravelAPITask(Context context) {
@@ -29,13 +34,9 @@ public class TravelAPITask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         coordinates = Double.toString(FilteredStopResult.getCurrentLatitude()) + ", " + Double.toString(FilteredStopResult.getCurrentLongitude());
-
         try {
             Response<NearestStops> response = api.getNearestStops(coordinates).execute();
             NearestStops stops = response.body();
-//            Log.e("Number of stops: ", String.valueOf(stops.getResults().size()));
-//            Log.e("Stop name : " , stops.getResults().get(0).getName());
-
             List<Result> results = stops.getResults();
 
             for(Result result : results) {
@@ -50,8 +51,14 @@ public class TravelAPITask extends AsyncTask {
         return null;
     }
 
-    @Override
-    protected void onPostExecute(Object o) {
-        asyncResponse.processNearestStops(filteredStopResults);
-    }
+//
+//    @Override
+//    protected void onPostExecute(Object o) {
+//        try {
+//            Thread.sleep(18000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        asyncResponse.processNearestStops(filteredStopResults);
+//    }
 }

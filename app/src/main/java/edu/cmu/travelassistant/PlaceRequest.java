@@ -56,21 +56,91 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
     }
 
 
+//    private void showPlaces(List<HashMap<String, String>> placeList) {
+//        for (int i = 0; i < placeList.size(); i++) {
+//            MarkerOptions options = new MarkerOptions();
+//            HashMap<String, String> place = placeList.get(i);
+//            double latitude = Double.parseDouble(place.get("latitude"));
+//            double longitude = Double.parseDouble(place.get("longitude"));
+//            String placeName = place.get("placeName");
+//            String vicinity = place.get("vicinity");
+//            LatLng position = new LatLng(latitude, longitude);
+//            options.position(position);
+//            options.title(placeName + "&" + vicinity);
+//            mMap.addMarker(options);
+//            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+//            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+//        }
+//    }
+
+    private HashMap<String, String> getPlace(JSONObject jsonPlace) {
+        HashMap<String, String> placeMap = new HashMap<>();
+        String nameOfPlace = "NULL";
+        String vicinity = "NULL";
+        String latitude = "";
+        String longitude = "";
+        String rating = "";
+        String opening_hours = "";
+
+        try {
+            if (!jsonPlace.isNull("name")) {
+                nameOfPlace = jsonPlace.getString("name");
+            }
+            if (!jsonPlace.isNull("vicinity")) {
+                vicinity = jsonPlace.getString("vicinity");
+            }
+            latitude = jsonPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
+            Log.d("latitude", latitude);
+            longitude = jsonPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");
+            Log.d("longitude", longitude);
+            rating = jsonPlace.getString("rating");
+            Log.d("rating", rating);
+            opening_hours = jsonPlace.getJSONObject("opening_hours").getString("open_now");
+            Log.d("opening", opening_hours);
+
+            placeMap.put("placeName", nameOfPlace);
+            placeMap.put("vicinity", vicinity);
+            placeMap.put("latitude", latitude);
+            placeMap.put("longitude", longitude);
+            placeMap.put("rating", rating);
+            placeMap.put("opening_hours", opening_hours);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return placeMap;
+    }
+
     private void showPlaces(List<HashMap<String, String>> placeList) {
         for (int i = 0; i < placeList.size(); i++) {
             MarkerOptions options = new MarkerOptions();
             HashMap<String, String> place = placeList.get(i);
-            double latitude = Double.parseDouble(place.get("latitude"));
-            double longitude = Double.parseDouble(place.get("longitude"));
-            String placeName = place.get("placeName");
-            String vicinity = place.get("vicinity");
-            LatLng position = new LatLng(latitude, longitude);
-            options.position(position);
-            options.title(placeName + "&" + vicinity);
-            mMap.addMarker(options);
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+
+            double latitude;
+            double longitude;
+            try {
+                latitude = Double.parseDouble(place.get("latitude"));
+                longitude = Double.parseDouble(place.get("longitude"));
+                String placeName = place.get("placeName");
+                String vicinity = place.get("vicinity");
+                String rating = place.get("rating");
+                String opening_now = place.get("opening_hours");
+
+                LatLng position = new LatLng(latitude, longitude);
+                options.position(position);
+                options.title(placeName);
+//                options.snippet(vicinity + ":" + rating + ":" + opening_now);
+                options.snippet(vicinity);
+
+                mMap.addMarker(options);
+
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+            } catch(Exception e) {
+                continue;
+            }
+
         }
     }
 
@@ -130,34 +200,34 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
         return listOfPlaces;
     }
 
-    private HashMap<String, String> getPlace(JSONObject jsonPlace) {
-        HashMap<String, String> placeMap = new HashMap<>();
-        String nameOfPlace = "NULL";
-        String vicinity = "NULL";
-        String latitude = "";
-        String longitude = "";
-        String reference = "";
-
-        try {
-            if (!jsonPlace.isNull("name")) {
-                nameOfPlace = jsonPlace.getString("name");
-            }
-            if (!jsonPlace.isNull("vicinity")) {
-                vicinity = jsonPlace.getString("vicinity");
-            }
-            latitude = jsonPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
-            longitude = jsonPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");
-            reference = jsonPlace.getString("reference");
-            placeMap.put("placeName", nameOfPlace);
-            placeMap.put("vicinity", vicinity);
-            placeMap.put("latitude", latitude);
-            placeMap.put("longitude", longitude);
-            placeMap.put("reference", reference);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return placeMap;
-    }
+//    private HashMap<String, String> getPlace(JSONObject jsonPlace) {
+//        HashMap<String, String> placeMap = new HashMap<>();
+//        String nameOfPlace = "NULL";
+//        String vicinity = "NULL";
+//        String latitude = "";
+//        String longitude = "";
+//        String reference = "";
+//
+//        try {
+//            if (!jsonPlace.isNull("name")) {
+//                nameOfPlace = jsonPlace.getString("name");
+//            }
+//            if (!jsonPlace.isNull("vicinity")) {
+//                vicinity = jsonPlace.getString("vicinity");
+//            }
+//            latitude = jsonPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
+//            longitude = jsonPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");
+//            reference = jsonPlace.getString("reference");
+//            placeMap.put("placeName", nameOfPlace);
+//            placeMap.put("vicinity", vicinity);
+//            placeMap.put("latitude", latitude);
+//            placeMap.put("longitude", longitude);
+//            placeMap.put("reference", reference);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return placeMap;
+//    }
 }
 
 
