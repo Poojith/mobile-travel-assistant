@@ -220,13 +220,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 for (Route r : sourceBuses) {
                                     if ( r != null && r.getRouteNumber().equals(route.getRouteNumber())) {
                                         commonRoute = route;
+                                        BusRoute b = new BusRoute();
+
+                                        Object[] searchData = new Object[5];
                                         Log.e("Common route", route.getRouteNumber());
+                                        searchData[0] = mMap;
                                         Log.e("Start stop ID", sourceStop.getStpid());
+                                        searchData[1] = route.getRouteNumber();
                                         Log.e("Start stop name", sourceStop.getStpnm());
+                                        searchData[2] = "INBOUND";
                                         Log.e("Stop ID", stop.getStpid());
+                                        searchData[3] = sourceStop.getStpid();
                                         Log.e("Stop destination name", stop.getStpnm());
+                                        searchData[4] = stop.getStpid();
+                                        b.execute(searchData);
                                         return;
                                     }
+
                                 }
                             }
                         }
@@ -331,13 +341,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("title", title2);
                 title.setText(title2);
 
-                TextView tvsnippet = new TextView(context);
-                String snippet = marker.getSnippet();
-                Log.e("snippet", snippet);
-                tvsnippet.setText(snippet);
+//                TextView tvsnippet = new TextView(context);
+//                String snippet = marker.getSnippet();
+//                Log.e("snippet", snippet);
+//                tvsnippet.setText(snippet);
 
                 info.addView(title);
-                info.addView(tvsnippet);
+                //info.addView(tvsnippet);
 
                 return info;
             }
@@ -381,6 +391,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pittsburgh, 14.0f));
         this.displayMyLocation(mMap);
+
     }
 
     /**
@@ -632,7 +643,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         url.append("&type=" + interestingPlace);
         url.append("&sensor=true");
 
-        url.append("&key=" + "AIzaSyCH9KLEiSz0eVokA6mNqZ7kErmPloUIU9k");
+        url.append("&key=" + "AIzaSyDhdw914cX9akpAvX2aYsfcMwDwAQb5SKw");
 
         return url.toString();
     }

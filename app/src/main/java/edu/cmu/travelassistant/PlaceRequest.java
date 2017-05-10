@@ -140,7 +140,6 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
             } catch(Exception e) {
                 continue;
             }
-
         }
     }
 
