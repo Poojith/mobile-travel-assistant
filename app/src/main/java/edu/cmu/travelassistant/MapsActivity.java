@@ -60,6 +60,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -155,6 +156,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras != null && extras.getBoolean("CalendarEntry")) {
+                Calendar cal = Calendar.getInstance();
+                Intent intent = new Intent(Intent.ACTION_EDIT);
+                intent.setType("vnd.android.cursor.item/event");
+                intent.putExtra("beginTime", cal.getTimeInMillis());
+                intent.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
+                intent.putExtra("title", "To catch 61D from XYZ, you must start moving now");
+                startActivity(intent);
+                return;
+            }
+        }
         setContentView(R.layout.activity_maps);
 
         boolean available = isGooglePlayServicesAvailable();
@@ -297,7 +311,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showNotification(String title, String content) {
-        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, MapsActivity.class), 0);
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("CalendarEntry", true);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
         Resources r = getResources();
         Notification notification = new NotificationCompat.Builder(this)
                 .setTicker("Travel Assistant")
@@ -306,6 +322,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .setContentText(content)
                 .setContentIntent(pi)
                 .setAutoCancel(true)
+                .addAction(R.drawable.common_google_signin_btn_icon_dark_normal, "Add Reminder", pi)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
