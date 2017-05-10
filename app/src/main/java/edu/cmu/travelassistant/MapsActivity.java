@@ -83,6 +83,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean mPermissionDenied = false;
 
     ArrayList<LatLng> markerPoints;
+
+    public static LatLng getUser() {
+        return user;
+    }
+
     private static LatLng user;
     private static LatLng userLastLocation;
 
@@ -92,6 +97,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static LatLng busStartingPoint;
     private static boolean userLocationFoundFirstTime = false;
     private static boolean busStringPointFound = false;
+
+
+
     Button getNearbyAttractions;
     /**
      * Request code for location permission request.
@@ -234,9 +242,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         Log.e("Stop destination name", stop.getStpnm());
                                         searchData[4] = stop.getStpid();
                                         b.execute(searchData);
+
+                                        //TODO change icon for the chosen
+
+
+                                        mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(stop.getLat()), Double.parseDouble(stop.getLon()))).title(stop.getStpnm())
+                                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
                                         return;
                                     }
-
                                 }
                             }
                         }
@@ -387,8 +400,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         realTimeAPITask = new RealTimeAPITask(context, mMap);
         realTimeAPITask.asyncResponse = this;
-        realTimeAPITask.execute();
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pittsburgh, 14.0f));
         this.displayMyLocation(mMap);
 
@@ -414,10 +425,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     user = new LatLng(arg0.getLatitude(), arg0.getLongitude());
                     if (!userLocationFoundFirstTime) {
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user, 16.0f));
-                        //TODO need to take current location dynamically
-//                        FilteredStopResult.setCurrentLatitude(arg0.getLatitude());
-//                        FilteredStopResult.setCurrentLongitude(arg0.getLongitude());
-//                        travelAPITask.execute();
+                        realTimeAPITask.execute();
                     }
                     userLocationFoundFirstTime = true;
                     if (user != null && busStartingPoint != null && busStringPointFound) {
