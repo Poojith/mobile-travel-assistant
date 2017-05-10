@@ -35,7 +35,7 @@ public class ArrivalTimeTask extends AsyncTask {
     Route finalRoute;
 
     String queryResult;
-    String baseUrl = "http://truetime.portauthority.org/bustime/api/v3/getpredictions?key=QzLiAG6tuHzPqqii3ETFuwTsZ&format=json&rtpidatafeed=Port%20Authority%20Bus&dir=INBOUND&rt=";
+    String baseUrl = "http://truetime.portauthority.org/bustime/api/v3/getpredictions?key=Gg5eAVrmgNc3U5kC5PcFfcQGz&format=json&rtpidatafeed=Port%20Authority%20Bus&dir=INBOUND&rt=";
 
     Map<Stop, Map<Route, List<TimePrediction>>> stopsRoutesAndPredictionsMap = new HashMap<>();
     Map<Stop, Marker> stopToMarkerMap;
@@ -93,18 +93,20 @@ public class ArrivalTimeTask extends AsyncTask {
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
             jsonObject = jsonObject.getJSONObject("bustime-response");
-            JSONArray jsonArray = jsonObject.getJSONArray("prd");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObject = jsonArray.getJSONObject(i);
-                String predictedArrivalTime = jsonObject.getString("prdctdn");
-                String predictionType = jsonObject.getString("typ");
-                String distanceFromStop = jsonObject.getString("dstp");
-                String finalDestination = jsonObject.getString("des");
-                String stopID = jsonObject.getString("stpid");
-                String routeNumber = jsonObject.getString("rt");
+            if (jsonObject.has("prd")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("prd");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObject = jsonArray.getJSONObject(i);
+                    String predictedArrivalTime = jsonObject.getString("prdctdn");
+                    String predictionType = jsonObject.getString("typ");
+                    String distanceFromStop = jsonObject.getString("dstp");
+                    String finalDestination = jsonObject.getString("des");
+                    String stopID = jsonObject.getString("stpid");
+                    String routeNumber = jsonObject.getString("rt");
 
-                TimePrediction timePrediction = new TimePrediction(predictedArrivalTime, predictionType, distanceFromStop, finalDestination, stopID, routeNumber);
-                timePredictionsList.add(timePrediction);
+                    TimePrediction timePrediction = new TimePrediction(predictedArrivalTime, predictionType, distanceFromStop, finalDestination, stopID, routeNumber);
+                    timePredictionsList.add(timePrediction);
+                }
             }
 
         } catch (JSONException e) {

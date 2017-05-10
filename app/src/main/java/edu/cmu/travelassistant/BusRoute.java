@@ -34,7 +34,7 @@ import java.util.List;
 public class BusRoute extends AsyncTask<Object, String, String> {
     String queryResult;
     GoogleMap mMap;
-    String preUrl = "http://truetime.portauthority.org/bustime/api/v3/getpatterns?key=QzLiAG6tuHzPqqii3ETFuwTsZ&rtpidatafeed=Port%20Authority%20Bus&format=json&rt=";
+    String preUrl = "http://truetime.portauthority.org/bustime/api/v3/getpatterns?key=Gg5eAVrmgNc3U5kC5PcFfcQGz&rtpidatafeed=Port%20Authority%20Bus&format=json&rt=";
     String url;
     String routeDirection;
     String startStop;
