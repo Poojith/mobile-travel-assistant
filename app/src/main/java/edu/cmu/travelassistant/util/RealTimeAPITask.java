@@ -11,9 +11,11 @@ import android.util.Log;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +44,12 @@ public class RealTimeAPITask extends AsyncTask {
     GoogleMap mMap;
     private Context context;
 
-    //    Map<Stop, List<Route>> stopToRoutesMap = Stop.getStopToRoutesMap();
+    ArrivalTimeTask arrivalTimeTask;
+
     Map<String, Stop> mapOfStops = Stop.getMapOfStops();
     Map<Route, List<Stop>> routesToStopMap = Route.getRouteToStopsMap();
+
+    Map<Stop, Marker> stopToMarkerMap = new HashMap<>();
 
     public AsyncResponse asyncResponse = null;
 
@@ -77,7 +82,6 @@ public class RealTimeAPITask extends AsyncTask {
         }
         return null;
     }
-
 
     private List<Stop> parse(String jsonData, Route route) {
         List<Stop> stops = new ArrayList<>();
@@ -154,8 +158,10 @@ public class RealTimeAPITask extends AsyncTask {
         }
 
         for (Stop stop : sourceList) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(stop.getLat()), Double.parseDouble(stop.getLon()))).title(stop.getStpnm())
+            Marker stopMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(stop.getLat()), Double.parseDouble(stop.getLon()))).title(stop.getStpnm())
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+            stopToMarkerMap.put(stop, stopMarker);
+
             List<Route> routes = stop.getRoutesAtThisStop();
             if (routes != null) {
                 List<BusStopResult> results = new ArrayList<>();
@@ -163,6 +169,8 @@ public class RealTimeAPITask extends AsyncTask {
                     String routeNumber = route.getRouteNumber();
                     BusStopResult result = new BusStopResult(routeNumber, "INBOUND", stop.getStpid());
                     results.add(result);
+                    arrivalTimeTask = new ArrivalTimeTask(context, mMap, stop, route);
+                    arrivalTimeTask.execute(stopMarker);
                 }
             }
         }

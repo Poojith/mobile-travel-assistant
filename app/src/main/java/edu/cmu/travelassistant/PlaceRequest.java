@@ -130,8 +130,6 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
                 marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_rest2));
                 markers.add(marker);
 
-                Log.e("Size of marker", String.valueOf(markers.size()));
-
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 mMap.addMarker(options);
 
