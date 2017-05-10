@@ -466,7 +466,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         info.addView(title);
                     }
                 }
-
+                else if( snippet!= null && snippet.startsWith("Route")) {
+                    String[] sniInfos = snippet.split("|");
+                    TextView tv1 = new TextView(context);
+                    TextView tv2 = new TextView(context);
+                    if (sniInfos.length == 2) {
+                        tv1.setText(sniInfos[0]);
+                        tv2.setText(sniInfos[1]);
+                        info.addView(title);
+                        info.addView(tv1);
+                        info.addView(tv2);
+                    }
+                    else {
+                        info.addView(title);
+                    }
+                }
 
                 return info;
             }
