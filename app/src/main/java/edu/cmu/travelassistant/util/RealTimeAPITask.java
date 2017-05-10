@@ -169,8 +169,8 @@ public class RealTimeAPITask extends AsyncTask {
                     String routeNumber = route.getRouteNumber();
                     BusStopResult result = new BusStopResult(routeNumber, "INBOUND", stop.getStpid());
                     results.add(result);
-                    arrivalTimeTask = new ArrivalTimeTask(context, mMap, stop, route);
-                    arrivalTimeTask.execute(stopMarker);
+//                    arrivalTimeTask = new ArrivalTimeTask(context, mMap, stop, route);
+//                    arrivalTimeTask.execute(stopMarker);
                 }
             }
         }
