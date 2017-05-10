@@ -174,8 +174,6 @@ public class RealTimeAPITask extends AsyncTask {
                 }
             }
         }
-
-
         asyncResponse.processNearestStops(sourceList);
     }
 }
