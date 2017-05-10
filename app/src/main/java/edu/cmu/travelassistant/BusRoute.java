@@ -40,6 +40,7 @@ public class BusRoute extends AsyncTask<Object, String, String> {
     String startStop;
     int stopFound = 0;
     String endStop;
+    private static List<Polyline> polylines = new ArrayList<Polyline>();
 
     @Override
     protected String doInBackground(Object... params) {
@@ -72,11 +73,11 @@ public class BusRoute extends AsyncTask<Object, String, String> {
                 LatLng pt1 = new LatLng(jsonObject.getDouble("lat"), jsonObject.getDouble("lon"));
                 jsonObject = new JSONObject(points.get(i));
                 LatLng pt2 = new LatLng(jsonObject.getDouble("lat"), jsonObject.getDouble("lon"));
-                Polyline line = mMap.addPolyline(new PolylineOptions()
+                polylines.add(mMap.addPolyline(new PolylineOptions()
                         .add(pt1, pt2)
                         .width(10)
                         .color(Color.RED)
-                );
+                ));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -85,6 +86,13 @@ public class BusRoute extends AsyncTask<Object, String, String> {
         }
     }
 
+    public static void clearBusRoute() {
+        for(Polyline line : polylines)
+        {
+            line.remove();
+        }
+        polylines.clear();
+    }
 
     public String query(String queryURL) throws IOException {
         String data = "";

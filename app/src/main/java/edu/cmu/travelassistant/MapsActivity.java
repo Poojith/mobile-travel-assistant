@@ -48,6 +48,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONObject;
@@ -107,6 +108,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static String distance = "";
     private static String duration = "";
+    private static List<Polyline> polylines = new ArrayList<Polyline>();
 
     Button getNearbyAttractions;
     /**
@@ -184,6 +186,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
+                // Clear any previos bus stops
+                BusRoute.clearBusRoute();
+                clearWalkingRoute();
+
                 Log.i(TAG, "Place: " + place.getName());
                 if (marker != null) marker.remove();
                 marker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).draggable(true));
@@ -734,7 +740,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lineOptions.color(Color.DKGRAY);
             }
             // Drawing polyline in the Google Map for the i-th route
-            mMap.addPolyline(lineOptions);
+            polylines.add(mMap.addPolyline(lineOptions));
         }
+    }
+
+    public static void clearWalkingRoute() {
+        for(Polyline line : polylines)
+        {
+            line.remove();
+        }
+        polylines.clear();
     }
 }
