@@ -325,11 +325,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int speedIs10MetersPerMinute = 83;
         float estimatedDriveTimeInMinutes = distanceInMeters / speedIs10MetersPerMinute;
 
-
-        String minutes = String.valueOf(20 + (int)(Math.random() * ((25 - 2) + 1)));
-        String meters = String.valueOf(2000 + (int)(Math.random() * ((3000 - 2) + 1)));
-
-        Toast.makeText(this, "Distance:" + meters + " meters\n Estimated time of travel : " + minutes + " minutes", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Distance:" + (int)distanceInMeters + " Meters\n Duration:" + (int)estimatedDriveTimeInMinutes + "Minutes", Toast.LENGTH_LONG).show();
         duration = Integer.toString((int)estimatedDriveTimeInMinutes);
     }
 
