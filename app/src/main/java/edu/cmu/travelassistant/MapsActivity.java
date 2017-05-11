@@ -197,14 +197,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Clear any previos bus stops
                 BusRoute.clearBusRoute();
                 clearWalkingRoute();
-
-                Log.i(TAG, "Place: " + place.getName());
                 if (marker != null) marker.remove();
-                marker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).draggable(true));
+                marker = mMap.addMarker(new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()));
 
                 marker.setTag("Destination");
-                marker.setSnippet(place.getName().toString());
-                marker.setTitle(place.getName().toString());
+
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user, 14.0f));
                 userDestination = place.getLatLng();
@@ -440,13 +437,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 title.setGravity(Gravity.CENTER);
                 title.setTypeface(null, Typeface.BOLD);
                 String title2 = marker.getTitle();
-                Log.e("title", title2);
                 title.setText(title2);
 
                 String snippet = marker.getSnippet();
-                if (snippet != null && snippet.startsWith("Address")) {
+                if (snippet == null) {
+                    info.addView(title);
+                } else if (snippet != null && snippet.startsWith("#||#")) {
+                    info.addView(title);
+                    snippet = snippet.substring(4);
+                    TextView tv1 = new TextView(context);
+                    tv1.setText(snippet);
+                    info.addView(tv1);
+                } else if (snippet != null && snippet.startsWith("Address")) {
                     String[] sniInfos = snippet.split("ZACK");
-                    Log.d("length", sniInfos.length + "");
                     TextView tv1 = new TextView(context);
                     TextView tv2 = new TextView(context);
                     TextView tv3 = new TextView(context);
@@ -466,8 +469,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     else {
                         info.addView(title);
                     }
-                }
-                else if( snippet!= null && snippet.startsWith("Route")) {
+                } else if( snippet!= null && snippet.startsWith("Route")) {
                     String[] sniInfos = snippet.split("|");
                     TextView tv1 = new TextView(context);
                     TextView tv2 = new TextView(context);
@@ -638,11 +640,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MarkerOptions options = new MarkerOptions();
         options.position(point1);
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        //mMap.addMarker(options);
 
         options.position(point2);
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        //mMap.addMarker(options);
 
         LatLng origin = markerPoints.get(0);
         LatLng dest = markerPoints.get(1);

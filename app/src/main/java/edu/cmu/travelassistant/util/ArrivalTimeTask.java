@@ -181,10 +181,13 @@ public class ArrivalTimeTask extends AsyncTask {
 //                        }
                     }
                 }
+            if (sb.length() == 0) {
+                sb.append("No bus arrivals available at this time");
+            }
             Log.e("Prediction" , sb.toString());
 
 //            Marker marker = stopToMarkerMap.get(finalStop);
-            stopMarker.setSnippet(sb.toString());
+            stopMarker.setSnippet("#||#" + sb.toString());
 
             }
         }

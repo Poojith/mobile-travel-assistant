@@ -158,8 +158,11 @@ public class RealTimeAPITask extends AsyncTask {
         }
 
         for (Stop stop : sourceList) {
-            Marker stopMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(stop.getLat()), Double.parseDouble(stop.getLon()))).title(stop.getStpnm())
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+            Marker stopMarker = mMap.addMarker(
+                    new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(stop.getLat()), Double.parseDouble(stop.getLon())))
+                            .title(stop.getStpnm())
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
             stopToMarkerMap.put(stop, stopMarker);
 
             List<Route> routes = stop.getRoutesAtThisStop();

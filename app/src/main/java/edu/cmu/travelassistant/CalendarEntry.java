@@ -16,11 +16,9 @@ import java.util.Calendar;
 public class CalendarEntry extends Activity {
 
     public CalendarEntry() {
-        Log.e("aaa", "aaaa");
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e("aaa", "aaaa");
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null)
