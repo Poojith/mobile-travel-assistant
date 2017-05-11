@@ -123,15 +123,18 @@ public class PlaceRequest extends AsyncTask<Object, String, String> {
                 if (opening_now == null) {
                     opening_now = "UNKNOWN";
                 }
-                options.snippet("Address: " + vicinity + "ZACK" + rating + "ZACK" + opening_now);
-                options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.restaurant));
+//                options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.restaurant));
 
                 Marker marker = mMap.addMarker(options);
                 marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.restaurant));
-                markers.add(marker);
+                marker.setSnippet("Address: " + vicinity + "ZACK" + rating + "ZACK" + opening_now);
+                marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.restaurant));
 
+//                mMap.addMarker(options);
+
+
+                markers.add(marker);
 //                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                mMap.addMarker(options);
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(13));

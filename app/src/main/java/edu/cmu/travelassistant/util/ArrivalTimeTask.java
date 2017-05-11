@@ -35,7 +35,7 @@ public class ArrivalTimeTask extends AsyncTask {
     Route finalRoute;
 
     String queryResult;
-    String baseUrl = "http://truetime.portauthority.org/bustime/api/v3/getpredictions?key=DNtdvbsiqryXXzC5cvCeSntuX&format=json&rtpidatafeed=Port%20Authority%20Bus&dir=INBOUND&rt=";
+    String baseUrl = "http://truetime.portauthority.org/bustime/api/v3/getpredictions?key=2dpGCNXPHBD4ZpkJh5wzaghhn&format=json&rtpidatafeed=Port%20Authority%20Bus&dir=INBOUND&rt=";
 
     Map<Stop, Map<Route, List<TimePrediction>>> stopsRoutesAndPredictionsMap = new HashMap<>();
     Map<Stop, Marker> stopToMarkerMap;
@@ -170,8 +170,9 @@ public class ArrivalTimeTask extends AsyncTask {
                     String arrivalTime = timePrediction.getPredictedArrivalTime();
 //                    String type = timePrediction.getPredictionType();
 
-                    sb.append("Route number : " + routeNumber + " | Arrival time : " + arrivalTime);
-                    sb.append("\n");
+                        sb.append("Route number : " + routeNumber + " | Arrival time : " + arrivalTime);
+                        sb.append("\n");
+
 
                     //TODO sort the arrival time according to route
 //                    if(type != null && type.equals("A") && arrivalTime != null) {
@@ -181,6 +182,15 @@ public class ArrivalTimeTask extends AsyncTask {
 //                        }
                     }
                 }
+
+
+//            if(sb.length() != 0) {
+//                stopMarker.setSnippet(sb.toString());
+//            }
+//            else {
+//                stopMarker.setSnippet("No information for this route at this moment.");
+//            }
+
             if (sb.length() == 0) {
                 sb.append("No bus arrivals available at this time");
             }

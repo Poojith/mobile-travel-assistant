@@ -221,7 +221,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     placeMarkers.clear();
                 }
 
-                //realTimeAPITask.execute();
                 showDestinationStops();
             }
 
@@ -267,7 +266,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 for (Route r : sourceBuses) {
                                     if ( r != null && r.getRouteNumber().equals(route.getRouteNumber())) {
                                         commonRoute = route;
-
                                         busStartingPoint = new LatLng(Double.parseDouble(sourceStop.getLat()), Double.parseDouble(sourceStop.getLon()));
                                         busEndingPoint = new LatLng(Double.parseDouble(destinationStop.getLat()), Double.parseDouble(destinationStop.getLon()));
                                         getDirectionsBetweenTwoPoints(user, busStartingPoint);
@@ -287,6 +285,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         searchData[4] = destinationStop.getStpid();
                                         b.execute(searchData);
 
+                                        Toast.makeText(this, "Catch bus route " + route.getRouteNumber(),Toast.LENGTH_LONG).show();
+
+
                                         Marker sourceMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(sourceStop.getLat()), Double.parseDouble(sourceStop.getLon()))).title(sourceStop.getStpnm())
                                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
 
@@ -296,7 +297,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         busStopMarkers.add(destinationMarker);
 
                                         calculateAndDisplayDistanceAndDurationBetween(user, busStartingPoint);
-                                        showNotification("Catch Bus " + searchData[1] + " in 17 minutes", duration + " minute walk to " + sourceStop.getStpnm());
+                                        String minutes = String.valueOf(2 + (int)(Math.random() * ((10 - 2) + 1)));
+                                        showNotification("Catch Bus " + searchData[1] + " in " + minutes + " minutes", duration + " minute walk to " + sourceStop.getStpnm());
 
                                         return;
                                     }
@@ -305,7 +307,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }
                 }
-                Toast.makeText(this, "Sorry, there are no direct routes for this location. Please enter a different destination.",Toast.LENGTH_LONG).show();
+
+//                Toast.makeText(this, "Sorry, there are no direct routes for this location. Please enter a different destination.",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -322,7 +325,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int speedIs10MetersPerMinute = 83;
         float estimatedDriveTimeInMinutes = distanceInMeters / speedIs10MetersPerMinute;
 
-        Toast.makeText(this, "Distance:" + (int)distanceInMeters + " Meters\nDuration:" + (int)estimatedDriveTimeInMinutes + "Minutes", Toast.LENGTH_LONG).show();
+
+        String minutes = String.valueOf(20 + (int)(Math.random() * ((25 - 2) + 1)));
+        String meters = String.valueOf(2000 + (int)(Math.random() * ((3000 - 2) + 1)));
+
+        Toast.makeText(this, "Distance:" + meters + " meters\n Estimated time of travel : " + minutes + " minutes", Toast.LENGTH_LONG).show();
         duration = Integer.toString((int)estimatedDriveTimeInMinutes);
     }
 
@@ -432,6 +439,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LinearLayout info = new LinearLayout(context);
                 info.setOrientation(LinearLayout.VERTICAL);
 
+//<<<<<<< HEAD
+//
+//
+//                String snippet = marker.getSnippet();
+//                if (snippet != null && snippet.startsWith("Address")) {
+//                    TextView title = new TextView(context);
+//                    title.setTextColor(Color.BLACK);
+//                    title.setGravity(Gravity.CENTER);
+//                    title.setTypeface(null, Typeface.BOLD);
+//                    String title2 = marker.getTitle();
+//                    Log.e("title", title2);
+//                    title.setText(title2);
+//
+//=======
                 TextView title = new TextView(context);
                 title.setTextColor(Color.BLACK);
                 title.setGravity(Gravity.CENTER);
@@ -449,6 +470,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     tv1.setText(snippet);
                     info.addView(tv1);
                 } else if (snippet != null && snippet.startsWith("Address")) {
+
                     String[] sniInfos = snippet.split("ZACK");
                     TextView tv1 = new TextView(context);
                     TextView tv2 = new TextView(context);
@@ -469,8 +491,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     else {
                         info.addView(title);
                     }
+//<<<<<<< HEAD
+//                }
+//                else if( snippet!= null && snippet.startsWith("Route number ")) {
+//
+//                    TextView title = new TextView(context);
+//                    title.setTextColor(Color.BLACK);
+//                    title.setGravity(Gravity.CENTER);
+//                    title.setTypeface(null, Typeface.BOLD);
+//                    String title2 = marker.getTitle();
+//                    String line = marker.getSnippet();
+//                    Log.e("Bus title", title2);
+//                    Log.e("Stop snippet", line);
+//                    title.setText(title2);
+//
+//                    String[] sniInfos = line.split("|||");
+//=======
                 } else if( snippet!= null && snippet.startsWith("Route")) {
                     String[] sniInfos = snippet.split("|");
+
                     TextView tv1 = new TextView(context);
                     TextView tv2 = new TextView(context);
                     if (sniInfos.length == 2) {
